@@ -1,0 +1,17 @@
+# =====Folders=====
+__pycache__/
+__pypackages__/
+*.egg-info/
+.idea/
+.ruff_cache/
+.venv/
+build/
+dist/
+logs/
+
+# =====Files=====
+*.iml
+.python-version
+*.log
+
+# =====Project=====

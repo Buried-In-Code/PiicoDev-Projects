@@ -1,13 +1,12 @@
-from PiicoDev_RGB import PiicoDev_RGB
-
 from bin import Bin
+from PiicoDev_RGB import PiicoDev_RGB
 
 ssid = "WIFI"
 password = "PASSWORD"
 timezone = "Pacific/Auckland"
 # fmt: off
 modules = [
-    PiicoDev_RGB()
+    PiicoDev_RGB(),
 ]
 # fmt: on
 
@@ -17,6 +16,6 @@ glass = Bin(module_index=0, light_index=2, colour=[0, 0, 255])
 # fmt: off
 weekly_options = [
     (rubbish, recycling),
-    (rubbish, glass)
+    (rubbish, glass),
 ]
 # fmt: on

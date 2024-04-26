@@ -1,21 +1,21 @@
 import gc
 import ujson
-from network import WLAN, STA_IF
 from machine import WDT
+from network import STA_IF, WLAN
 from utime import sleep
 
 import urequests
 
-from config import ssid, password, timezone, modules, weekly_options
+from config import modules, password, ssid, timezone, weekly_options
 
 wlan = WLAN(STA_IF)
 watchdog = WDT(timeout=8000)  # 8 Seconds
 
 
-def connect_to_wifi():
+def connect_to_wifi() -> str:
     wlan.active(True)
     wlan.connect(ssid, password)
-    while not wlan.isconnected():
+    while wlan.isconnected() is False:
         print("Waiting for connection...")
         sleep(1)
     ip = wlan.ifconfig()[0]
@@ -25,19 +25,20 @@ def connect_to_wifi():
 
 def load_state() -> tuple[int, int]:
     try:
-        with open("state.json", "r") as stream:
+        with open("state.json") as stream:
             data = ujson.load(stream)
             return data["index"], data["week"]
-    except OSError:
+    except OSError as err:
+        print("Error loading state:", err)
         return 0, None
 
 
-def save_state(index: int, week: int):
+def save_state(index: int, week: int) -> None:
     try:
         with open("state.json", "w") as stream:
             ujson.dump({"index": index, "week": week}, stream)
-    except OSError as e:
-        print("Error saving state:", e)
+    except OSError as err:
+        print("Error saving state:", err)
 
 
 def get_week() -> int:
@@ -45,8 +46,8 @@ def get_week() -> int:
         response = urequests.get(f"http://worldtimeapi.org/api/timezone/{timezone}")
         response = response.json()
         return response.get("week_number", None)
-    except Exception as e:
-        print("Error fetching week number:", e)
+    except Exception as err:  # noqa: BLE001
+        print("Error fetching week number:", err)
         return None
 
 
@@ -54,13 +55,12 @@ def change_lights(index: int) -> int:
     for module in modules:
         module.clear()
 
-    for bin in weekly_options[index]:
+    for bin in weekly_options[index]:  # noqa: A001
         weekly_options[bin.module_index].setPixel(bin.light_index, bin.colour)
     for module in modules:
         module.show()
 
-    index = (index + 1) % len(weekly_options)
-    return index
+    return (index + 1) % len(weekly_options)
 
 
 ip = connect_to_wifi()
