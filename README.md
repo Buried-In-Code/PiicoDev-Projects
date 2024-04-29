@@ -23,5 +23,5 @@ A micropython project to visually show what bins to put out each week.
     - `mpremote mip install urequests`
 5. Copy the config file to your device: `mpremote cp bin_lights/config.py :`
 6. Update the `config.py` file with your settings: `mpremote edit config.py`
-7. Copy the bin file to your device: `mpremote cp bin_lights/bin.py :`
+7. Copy the utils file to your device: `mpremote cp bin_lights/utils.py :`
 8. Copy the main file to your device: `mpremote cp bin_lights/main.py :`
