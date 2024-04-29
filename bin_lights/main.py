@@ -82,7 +82,7 @@ while True:
         module.pwrLED(True)
 
     current_date, day_of_week = get_current_date()
-    if current_date and (not date or current_date != date):
+    if (current_date and not date) or (current_date and current_date != date):
         if (
             (show_before and day_of_week - rubbish_day == 1)
             or (rubbish_day == day_of_week)
