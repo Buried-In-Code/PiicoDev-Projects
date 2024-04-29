@@ -6,7 +6,16 @@ from utime import sleep
 
 import urequests
 
-from config import bin_rotation, modules, password, rubbish_day, show_after, show_before, ssid
+from config import (
+    bin_rotation,
+    modules,
+    password,
+    rubbish_day,
+    show_after,
+    show_before,
+    ssid,
+    timezone,
+)
 from utils import Date, Day, count_mondays
 
 wlan = WLAN(STA_IF)
@@ -44,7 +53,7 @@ def save_state(index: int, date: Date) -> None:
 
 def get_current_date() -> tuple[Date, Day]:
     try:
-        response = urequests.get("http://worldtimeapi.org/api/ip")
+        response = urequests.get(f"http://worldtimeapi.org/api/timezone/{timezone}")
         data = response.json()
         return Date.from_iso_format(data["datetime"]), Day(data["day_of_week"])
     except Exception as err:  # noqa: BLE001
