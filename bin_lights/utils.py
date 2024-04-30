@@ -1,6 +1,3 @@
-from enum import IntEnum
-
-
 class Bin:
     def __init__(self, module: int, led: int, colour: list[int]):
         self.module = module
@@ -8,7 +5,7 @@ class Bin:
         self.colour = colour
 
 
-class Day(IntEnum):
+class Day:
     MON = 1
     TUE = 2
     WED = 3
@@ -17,17 +14,34 @@ class Day(IntEnum):
     SAT = 6
     SUN = 7
 
+    @staticmethod
+    def _normalize(value: int) -> int:
+        return (value - 1) % 7 + 1
+
+    def __init__(self, value: int) -> None:
+        self.value = self._normalize(value=value)
+
     def __add__(self, other) -> "Day":  # noqa: ANN001
         if not isinstance(other, int):
             raise NotImplementedError
-        result = (self.value + other - 1) % 7 + 1
+        result = self._normalize(value=self.value + other)
         return Day(result)
 
     def __sub__(self, other) -> "Day":  # noqa: ANN001
         if not isinstance(other, int):
             raise NotImplementedError
-        result = (self.value - other - 1) % 7 + 1
+        result = self._normalize(value=self.value - other)
         return Day(result)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}.{self.name}"
+
+    @property
+    def name(self) -> str:
+        for name, value in vars(self.__class__).items():
+            if value == self.value:
+                return name
+        return None
 
 
 class Date:
