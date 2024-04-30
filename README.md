@@ -1,6 +1,6 @@
 # Bin Lights
 
-![Micropython](https://img.shields.io/badge/Micropython-1.20.0-green?style=flat-square)
+![Micropython](https://img.shields.io/badge/Micropython-1.22.2-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Beta-yellowgreen?style=flat-square)
 
 A micropython project to visually show what bins to put out each week.
