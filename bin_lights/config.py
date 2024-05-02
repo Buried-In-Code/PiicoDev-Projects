@@ -4,7 +4,7 @@ from utils import Bin, Day
 ssid = "WIFI"
 password = "PASSWORD"
 timezone = "Pacific/Auckland"
-show_lights = [Day.WED, Day.THU, Day.FRI]
+show_lights = [Day.wednesday(), Day.thursday(), Day.friday()]
 modules = [
     PiicoDev_RGB(bright=10),
 ]

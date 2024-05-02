@@ -39,3 +39,31 @@ class Day:
 
     def __hash__(self) -> int:
         return hash((type(self), self.value))
+    
+    @staticmethod
+    def sunday() -> "Day":
+        return Day(value=Day.SUN)
+    
+    @staticmethod
+    def monday() -> "Day":
+        return Day(value=Day.MON)
+    
+    @staticmethod
+    def tuesday() -> "Day":
+        return Day(value=Day.TUE)
+    
+    @staticmethod
+    def wednesday() -> "Day":
+        return Day(value=Day.WED)
+    
+    @staticmethod
+    def thursday() -> "Day":
+        return Day(value=Day.THU)
+    
+    @staticmethod
+    def friday() -> "Day":
+        return Day(value=Day.FRI)
+    
+    @staticmethod
+    def saturday() -> "Day":
+        return Day(value=Day.SAT)
