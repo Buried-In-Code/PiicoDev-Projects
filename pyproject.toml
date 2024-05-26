@@ -33,10 +33,12 @@ unsafe-fixes = true
 
 [tool.ruff.format]
 docstring-code-format = true
+exclude = ["config.py"]
 line-ending = "native"
 skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
+exclude = ["config.py"]
 ignore = [
   "ANN101",
   "COM812",
@@ -46,9 +48,9 @@ ignore = [
   "INP001",
   "PLR2004",
   "PTH",
-  "T"
+  "T",
+  "TRY300"
 ]
-ignore-init-module-imports = true
 select = ["ALL"]
 
 [tool.ruff.lint.flake8-annotations]
@@ -63,14 +65,15 @@ ignore-variadic-names = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
+extra-standard-library = ["ujson"]
+known-local-folder = ["config", "utils"]
+known-third-party = ["PiicoDev_SSD1306", "PiicoDev_TMP117", "urequests"]
 split-on-trailing-comma = false
 
 [tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod"]
 
 [tool.ruff.lint.per-file-ignores]
-"bin_lights/config.py" = ["I", "S105"]
-"bin_lights/main.py" = ["I"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
