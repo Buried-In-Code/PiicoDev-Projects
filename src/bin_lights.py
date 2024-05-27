@@ -1,20 +1,13 @@
 import ujson
 
-from config import bin_rotations, light_modules, show_lights
-from utils import get_current_date
-
-
-class Bin:
-    def __init__(self, module: int, led: int, colour: list[int]):
-        self.module = module
-        self.led = led
-        self.colour = colour
+from config import bin_rotation, light_modules, show_lights
+from utils import Bin, calculate_day_of_week, calculate_week_number
 
 
 class BinLights:
     def __init__(self) -> None:
         self._modules = light_modules
-        self._bin_rotations = bin_rotations
+        self._bin_rotation = bin_rotation
         self._show_lights = show_lights
         self.last_updated, self.index = self.load_state()
 
@@ -36,10 +29,13 @@ class BinLights:
             print("Error saving state:", err)
 
     def update(self) -> None:
+        print("Starting update of Bin Lights")
         for module in self._modules:
+            print("Turning on PowerLED")
             module.pwrLED(True)
 
-        week_number, day_of_week = get_current_date()
+        week_number = calculate_week_number()
+        day_of_week = calculate_day_of_week()
         if week_number is not None:
             if self.last_updated is not None and week_number != self.last_updated:
                 self.index = 1 - self.index
@@ -47,12 +43,14 @@ class BinLights:
             self.save_state()
         if day_of_week is not None:
             if day_of_week in self._show_lights:
-                self.enable_lights(bins=self._bin_rotations[self.index])
+                self.enable_lights(bins=self._bin_rotation[self.index])
             else:
                 self.disable_lights()
 
         for module in self._modules:
+            print("Turning off PowerLED")
             module.pwrLED(False)
+        print("Finished update of Bin Lights")
 
     def enable_lights(self, bins: list[Bin]) -> None:
         self.disable_lights()

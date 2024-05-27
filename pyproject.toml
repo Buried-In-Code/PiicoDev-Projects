@@ -46,8 +46,10 @@ ignore = [
   "FA",
   "FBT",
   "INP001",
+  "PERF203",
   "PLR2004",
   "PTH",
+  "SIM105",
   "T",
   "TRY300"
 ]
@@ -65,9 +67,9 @@ ignore-variadic-names = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-extra-standard-library = ["ujson"]
+extra-standard-library = ["machine", "network", "ntptime", "ucollections", "ujson", "utime"]
 known-local-folder = ["config", "utils"]
-known-third-party = ["PiicoDev_SSD1306", "PiicoDev_TMP117", "urequests"]
+known-third-party = ["PiicoDev", "urequests"]
 split-on-trailing-comma = false
 
 [tool.ruff.lint.pep8-naming]
