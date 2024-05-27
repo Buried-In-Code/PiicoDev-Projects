@@ -6,8 +6,6 @@ from PiicoDev_TMP117 import PiicoDev_TMP117
 
 from utils import calculate_date, calculate_time, show_date, show_time
 
-_REG_CTRL = 0x03
-
 
 class TemperatureScreen:
     def __init__(self) -> None:
@@ -41,7 +39,7 @@ class TemperatureScreen:
         self._display.fill(0)
         previous_date = None
         index = 0
-        for datetime, temperature in reversed(self.readings):
+        for datetime, temperature in reversed(list(self.readings)):
             date = datetime[0], datetime[1], datetime[2]
             time = datetime[4], datetime[5], datetime[6]
             if previous_date != date:
