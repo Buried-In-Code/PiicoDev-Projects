@@ -48,7 +48,7 @@ def show_date(date: tuple[int, int, int], day_of_week: int) -> str:
     weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     weekday_name = weekdays[day_of_week]
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    month_name = months[date[1]]
+    month_name = months[date[1] - 1]
     return f"{weekday_name}, {date[2]:02d} {month_name} {date[0]:04d}"
 
 

@@ -15,14 +15,9 @@ description = "A micropython project to visually show what bins to put out each 
 dynamic = []
 keywords = []
 license = {text = "MIT"}
-name = "bin-lights"
+name = "PiicoDev-Projects"
 readme = "README.md"
 version = "0.1.0"
-
-[project.optional-dependencies]
-dev = [
-  "pre-commit >= 3.7.0"
-]
 
 [tool.ruff]
 fix = true
@@ -82,3 +77,8 @@ convention = "google"
 
 [tool.ruff.lint.pyupgrade]
 keep-runtime-typing = true
+
+[tool.rye]
+dev-dependencies = [
+  "pre-commit >= 3.7.1"
+]
