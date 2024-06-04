@@ -42,11 +42,12 @@ def set_time() -> None:
             print("Failed to set time:", err)
 
 
-def custom_sleep() -> None:
-    for _ in range(12):
-        gc.collect()
-        watchdog.feed()
-        sleep(5)
+def sleep_min(value: int = 1) -> None:
+    for _ in range(value):
+        for _ in range(12):
+            gc.collect()
+            watchdog.feed()
+            sleep(5)
 
 
 connect_to_wifi()
@@ -55,13 +56,12 @@ set_time()
 print(f"Bin Lights enabled: {bin_lights is not None}")
 print(f"Temperature Screen enabled: {temperature_screen is not None}")
 while True:
-    if bin_lights:
+    if bin_lights:  # Run every hr
         bin_lights.update()
 
-    for _ in range(12):  # Waiting 1hr
-        if temperature_screen:
+    for _ in range(12):
+        if temperature_screen:  # Run every 5min
             temperature_screen.update()
 
-        for _ in range(5):  # Waiting 5mins
-            print("Waiting 1min...")
-            custom_sleep()  # Waiting 1min
+        print("Waiting 5min...")
+        sleep_min(value=5)

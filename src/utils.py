@@ -39,22 +39,12 @@ def calculate_day_of_week() -> int:
     return get_datetime()[6]
 
 
-def calculate_date() -> tuple[int, int, int, int]:
-    year, month, day, _, _, _, day_of_week, _ = get_datetime()
-    return year, month, day, day_of_week
-
-
 def show_date(date: tuple[int, int, int], day_of_week: int) -> str:
     weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     weekday_name = weekdays[day_of_week]
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     month_name = months[date[1] - 1]
     return f"{weekday_name}, {date[2]:02d} {month_name} {date[0]:04d}"
-
-
-def calculate_time() -> tuple[int, int, int]:
-    _, _, _, hour, minute, second, _, _ = get_datetime()
-    return hour, minute, second
 
 
 def show_time(time: tuple[int, int, int]) -> str:

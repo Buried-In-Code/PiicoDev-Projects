@@ -21,3 +21,7 @@ try:
     ]
 except ImportError:
     pass
+
+# Temperature Screen
+device_name = "DEVICE"
+base_url = "http://127.0.0.1:25712"
