@@ -49,3 +49,10 @@ def show_date(date: tuple[int, int, int], day_of_week: int) -> str:
 
 def show_time(time: tuple[int, int, int]) -> str:
     return f"{time[0]:02d}:{time[1]:02d}"
+
+
+def encode_params(params: dict) -> str:
+    encoded_params = []
+    for key, value in params.items():
+        encoded_params.append(str(key) + "=" + str(value))
+    return "&".join(encoded_params)

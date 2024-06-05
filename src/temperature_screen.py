@@ -6,7 +6,7 @@ from PiicoDev_SSD1306 import HEIGHT, create_PiicoDev_SSD1306
 from PiicoDev_TMP117 import PiicoDev_TMP117
 
 from config import base_url, device_name
-from utils import get_datetime, show_date, show_time
+from utils import encode_params, get_datetime, show_date, show_time
 
 headers = {
     "Accept": "application/json",
@@ -38,6 +38,18 @@ class TemperatureScreen:
                 ujson.dump({"readings": list(self.readings), "device_id": self.device_id}, stream)
         except OSError as err:
             print("Error saving state:", err)
+
+    def check_device_exists(self) -> int:
+        response = urequests.get(
+            url=f"{base_url}/api/devices?{encode_params(params={"name": device_name, "limit": 1})}",
+            headers=headers,
+        )
+        if response.status_code != 200:
+            return None
+        data = response.json()
+        if not data:
+            return None
+        return data[0]["id"]
 
     def create_device(self) -> int:
         body = {"name": device_name}
@@ -86,14 +98,18 @@ class TemperatureScreen:
                 pass
 
         if not self.device_id:
-            self.device_id = self.create_device()
+            self.device_id = self.check_device_exists()
+            if not self.device_id:
+                self.device_id = self.create_device()
 
         temperature = self._temp_sensor.readTempC()
         year, month, day, hour, minute, second, day_of_week, _ = get_datetime()
         self.readings.append(((year, month, day, day_of_week, hour, minute, second), temperature))
-        self.save_state()
         datetime = f"{year:04d}-{month:02d}-{day:02d}T{hour:02d}:{minute:02d}:{second:02d}"
         self.send_measurement(datetime=datetime, temperature=temperature)
+
+        self.save_state()
+
         self.update_display()
 
         for module in (self._temp_sensor, self._display):
