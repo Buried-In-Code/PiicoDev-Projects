@@ -1,8 +1,3 @@
-import utime
-
-from config import offset
-
-
 class Bin:
     def __init__(self, module: int, led: int, colour: list[int]):
         self.module = module
@@ -18,41 +13,3 @@ class Day:
     FRI = 4
     SAT = 5
     SUN = 6
-
-
-def get_datetime(offset: int = offset) -> tuple[int, int, int, int, int, int, int, int]:
-    return utime.gmtime(utime.time() + offset * 3600)
-
-
-def calculate_week_number() -> int:
-    year, _, _, _, _, _, _, day_of_year = get_datetime()
-
-    jan1_tuple = utime.mktime((year, 1, 1, 0, 0, 0, 0, 0))
-    jan1_weekday = utime.localtime(jan1_tuple)[6]
-
-    first_monday_offset = -jan1_weekday if jan1_weekday <= 3 else 7 - jan1_weekday
-
-    return (day_of_year + first_monday_offset) // 7 + 1
-
-
-def calculate_day_of_week() -> int:
-    return get_datetime()[6]
-
-
-def show_date(date: tuple[int, int, int], day_of_week: int) -> str:
-    weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    weekday_name = weekdays[day_of_week]
-    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    month_name = months[date[1] - 1]
-    return f"{weekday_name}, {date[2]:02d} {month_name} {date[0]:04d}"
-
-
-def show_time(time: tuple[int, int, int]) -> str:
-    return f"{time[0]:02d}:{time[1]:02d}"
-
-
-def encode_params(params: dict) -> str:
-    encoded_params = []
-    for key, value in params.items():
-        encoded_params.append(str(key) + "=" + str(value))
-    return "&".join(encoded_params)

@@ -1,11 +1,13 @@
 import ujson
 
+from clock import Clock
 from config import bin_rotation, light_modules, show_lights
-from utils import Bin, calculate_day_of_week, calculate_week_number
+from utils import Bin
 
 
 class BinLights:
-    def __init__(self) -> None:
+    def __init__(self, clock: Clock) -> None:
+        self._clock = clock
         self._modules = light_modules
         self._bin_rotation = bin_rotation
         self._show_lights = show_lights
@@ -34,8 +36,7 @@ class BinLights:
             print("Turning on PowerLED")
             module.pwrLED(True)
 
-        week_number = calculate_week_number()
-        day_of_week = calculate_day_of_week()
+        day_of_week, week_number = self._clock.calculate_days()
         if week_number is not None:
             if self.last_updated is not None and week_number != self.last_updated:
                 self.index = 1 - self.index

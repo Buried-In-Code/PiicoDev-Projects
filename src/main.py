@@ -1,26 +1,14 @@
 import gc
-import ntptime
 from machine import WDT
 from network import STA_IF, WLAN
 from utime import sleep
 
+from bin_lights import BinLights
+from clock import Clock
 from config import password, ssid
+from temperature_screen import TemperatureScreen
 
 wlan = WLAN(STA_IF)
-watchdog = WDT(timeout=8000)  # 8 Seconds
-
-try:
-    from bin_lights import BinLights
-
-    bin_lights = BinLights()
-except ImportError:
-    bin_lights = None
-try:
-    from temperature_screen import TemperatureScreen
-
-    temperature_screen = TemperatureScreen()
-except ImportError:
-    temperature_screen = None
 
 
 def connect_to_wifi() -> None:
@@ -33,15 +21,6 @@ def connect_to_wifi() -> None:
     print(f"Connected on {ip}")
 
 
-def set_time() -> None:
-    while True:
-        try:
-            ntptime.settime()
-            return
-        except OSError as err:
-            print("Failed to set time:", err)
-
-
 def sleep_min(value: int = 1) -> None:
     for _ in range(value):
         for _ in range(12):
@@ -51,17 +30,17 @@ def sleep_min(value: int = 1) -> None:
 
 
 connect_to_wifi()
-set_time()
 
-print(f"Bin Lights enabled: {bin_lights is not None}")
-print(f"Temperature Screen enabled: {temperature_screen is not None}")
+clock = Clock()
+bin_lights = BinLights(clock=clock)
+temperature_screen = TemperatureScreen(clock=clock)
+watchdog = WDT(timeout=8000)  # 8 Seconds
+
 while True:
-    if bin_lights:  # Run every hr
-        bin_lights.update()
+    bin_lights.update()  # Run every hr
 
     for _ in range(12):
-        if temperature_screen:  # Run every 5min
-            temperature_screen.update()
+        temperature_screen.update()  # Run every 5min
 
         print("Waiting 5min...")
         sleep_min(value=5)
